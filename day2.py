@@ -1,9 +1,16 @@
 def f(nums):
     superprod = 1
+    zeroes = 0
     for n in nums:
-        superprod *= n
+        if n == 0: zeroes += 1
+        else: superprod *= n
 
-    products = [superprod // n for n in nums]
+    if zeroes == 0:
+        products = [superprod // n for n in nums]
+    elif zeroes == 1:
+        products = [(superprod if n == 0 else 0) for n in nums]
+    else:
+        products = [0] * len(nums)
 
     return products
 
