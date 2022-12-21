@@ -1,3 +1,6 @@
+SEP_CH = '\t' # Seperating character. No node's val should contain this
+
+
 class Node:
     def __init__(self, val, left=None, right=None):
         self.val = val
@@ -6,32 +9,47 @@ class Node:
 
 
 def deserialize(data):
-    if isinstance(data, str): data = data.splitlines()
-    
     if len(data) == 0: return None
-    if len(data) == 1: return Node(data[0].lstrip())
-
-    left_indent = first_not_of(data[1], ' ')
     
-    right_index = 2
-    for line in data[2:]:
-        this_indent = first_not_of(line, ' ')
-        if this_indent == left_indent: break
-        else: right_index += 1
+    if isinstance(data, str):
+        list_data = []
+        i = 0; j = i
+        while i < len(data):
+            j = first_not_of(data, SEP_CH, j)
+            if j < len(data):
+                j = data.find(SEP_CH, j)
+                if j == -1: j = len(data)
+            else: j = len(data)
+            list_data.append(data[i:j])
+            i = j
+        data = list_data
+    
+    val = data[0].replace(SEP_CH, '')
+    
+    if len(data) == 1:
+        return Node(val)
+    else:
+        left_indent = first_not_of(data[1], SEP_CH)
+        
+        right_index = 2
+        for line in data[2:]:
+            this_indent = first_not_of(line, SEP_CH)
+            if this_indent == left_indent: break
+            else: right_index += 1
 
-    node = Node(data[0].lstrip(), deserialize(data[1:right_index]), deserialize(data[right_index:]))
-    return node
+        node = Node(val, deserialize(data[1:right_index]), deserialize(data[right_index:]))
+        return node
 
 
-def first_not_of(string, char):
-    i = 0
-    for c in string:
-        if c == char: i += 1
-        else: return i
+def first_not_of(string, char, start=0):
+    i = start
+    while i < len(string) and string[i] == char:
+        i += 1
+    return i
 
 
 def serialize(node, indent=0):
-    data = ' ' * indent + node.val + '\n'
+    data = SEP_CH * indent + node.val
     if node.left: data += serialize(node.left, indent + 1)
     if node.right: data += serialize(node.right, indent + 1)
     return data
