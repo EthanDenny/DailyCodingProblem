@@ -4,10 +4,8 @@ def f(nums):
         n = nums[i]
 
         if 0 < n < len(nums):
-            temp = nums[n]
-            nums[n] = nums[i]
-            nums[i] = temp
-            if n == temp:
+            nums[n - 1], nums[i] = nums[i], nums[n - 1]
+            if nums[n - 1] == nums[i]:
                 i += 1
         else:
             i += 1
@@ -16,6 +14,7 @@ def f(nums):
     for n in nums:
         if low == n:
             low += 1
+    
     return low
 
 
