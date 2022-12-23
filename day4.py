@@ -24,6 +24,6 @@ if __name__ == "__main__":
     result = f(nums)
     print(result)
 
-    nums = [2, 1, 3, 6]
+    nums = [2, 1, 0]
     result = f(nums)
     print(result)
