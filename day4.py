@@ -1,14 +1,8 @@
 def f(nums):
-    i = 0
-    while i < len(nums):
-        n = nums[i]
-
-        if 0 < n < len(nums):
+    for i in range(len(nums)):
+        while 0 < (n := nums[i]) < len(nums):
+            if nums[n - 1] == nums[i]: break
             nums[n - 1], nums[i] = nums[i], nums[n - 1]
-            if nums[n - 1] == nums[i]:
-                i += 1
-        else:
-            i += 1
 
     low = 1
     for n in nums:
