@@ -45,15 +45,26 @@ class XORLinkedList:
         self._count += 1
     
     def get(self, index):
-        i = 0
-        last_ptr = 0
-        node = self._head
-        while i < index:
-            next_ptr = last_ptr ^ node.both
-            last_ptr = get_pointer(node)
-            node = dereference_pointer(next_ptr)
-            i += 1
-        return node
+        if index < self._count - index: # Search from left
+            i = 0
+            last_ptr = 0
+            node = self._head
+            while i < index:
+                next_ptr = last_ptr ^ node.both
+                last_ptr = get_pointer(node)
+                node = dereference_pointer(next_ptr)
+                i += 1
+            return node
+        else: # Search from right
+            i = self._count - 1
+            last_ptr = 0
+            node = self._tail
+            while i > index:
+                next_ptr = last_ptr ^ node.both
+                last_ptr = get_pointer(node)
+                node = dereference_pointer(next_ptr)
+                i -= 1
+            return node
 
 
 if __name__ == "__main__":
